@@ -1,0 +1,248 @@
+---
+title: "Predicting income"
+author: "Jose Luis diaz Pulgar"
+date: "2023-03-24"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Predicting Income with Social Data.
+
+The Panel Survey of Income Data is the longest running longitudinal household survey in the world. Survey responses related to social, economic, and health outcomes have been collected from the families and their descendants since 1968. 
+
+This dataset is widely used by social scientists to investigate the relationship between individual characteristics, like gender or age, and broader socioeconomic outcomes like education achievement and lifetime income. In this project, you’ll have the chance to use PSID data and linear regression to predict the labor-derived income of survey respondents based on the following set of variables:
+
+* **`gender`**: the gender, female-identifying, male-identifying, or other, of a respondent
+* **`age`**: the age of the respondent
+* **`married`**: the marital status, unmarried, married, or divorced, of a respondent
+* **`employed`**: the employment status of the respondent at the time of survey collection
+* **`educated_in_us`**: whether the respondent went to primary school in the United Statues
+* **`highest_degree`**: the highest educational degree obtained by the respondent
+* **`education_years`**: the total number of years of formal education completed by the respondent
+* **`labor_income`**: the yearly income earned by the respondent from a salary or hourly employment
+
+Unlike other data science methods, linear regression models will allow us to not only predict the value of a respondent’s income, but provide information on how a variable impacts respondent income. Let’s dive into the social patterns that underly Americans’ incomes!
+
+
+
+## Clean and check data assumptions.
+
+```{r message=FALSE, warning=FALSE}
+# load packages and data
+library(ggplot2)
+library(dplyr)
+library(modelr)
+psid <- read.csv("psid_2017.csv")
+
+```
+
+1. checkout the structure of our dataset.
+
+```{r message=FALSE, warning=FALSE}
+head(psid,10)
+
+str(psid)
+
+```
+
+2. Plot a bar graph. data age
+
+```{r message=FALSE, warning=FALSE}
+
+age_dist <- ggplot(data = psid, aes(x=age)) + 
+  geom_bar()
+age_dist
+
+```
+
+
+3. We are interested in predicting the labor income of survey respondents, it would be reasonable to filter our data so that it only includes respondents of working age, roughly between 18 and 75.
+
+
+```{r}
+psid_clean <- psid%>%filter(age>=18 & age<75)
+age_dist_clean <- ggplot(data = psid_clean, aes(x=age)) + 
+  geom_bar()
+age_dist_clean
+
+```
+
+4. Draw a boxplot of education years to find outliers.
+
+```{r}
+educ_dist <- psid_clean%>%
+  ggplot(aes(y = education_years)) +
+  geom_boxplot()
+ 
+# view plot
+educ_dist
+```
+
+
+5. some of the values in our observed data do not make much sense. Limit education years between 5 and 25 years
+
+```{r}
+psid_clean <- psid_clean%>%filter(education_years > 5 & education_years < 25)
+
+```
+
+6. Boxplot of labor income
+
+```{r}
+income_dist <- ggplot(data=psid_clean, aes(y=labor_income))+
+  geom_boxplot()
+income_dist
+```
+
+7. Using summary for a better interpretation of the column `labor_income`
+
+```{r}
+summary(psid_clean$labor_income)
+```
+
+8. Creating a scatterplot of average income by age.
+
+```{r}
+mean_income_by_age <- psid_clean%>%
+  group_by(age) %>%
+  summarise(mean_income = mean(labor_income)) %>%
+  ggplot(aes(age, mean_income)) +
+  geom_point()
+mean_income_by_age
+```
+
+It seems like those 50 years are older are much more likely to have zero income. While this skew will effect our model, given that up until the age of 50 there appears to be a roughly linear relationship between `age` and `labor_income`, it is still valid to use linear regression to model this dataset.
+
+
+## Build model and assess fit.
+
+9. Defining train set and test set and building the model.
+
+```{r}
+
+# Defining a seed
+set.seed(123) 
+
+sample <- sample(c(TRUE, FALSE), nrow(psid_clean), replace = T, prob = c(0.6,0.4))
+
+# Defining train and test sets
+
+train <- psid_clean[sample,]
+test <- psid_clean[!sample,]
+
+# Building the model: education_years on labor_income
+
+model <- lm(labor_income~education_years, data = train)
+
+# Results
+summary(model)
+
+```
+
+
+10. Let’s compare our model against an LOESS smoother to see where our model predictions differ most substantially from the average observed value.
+
+
+
+```{r}
+# plot against LOESS model
+plot <- ggplot(data=train, aes(education_years, labor_income)) +
+  geom_point() + 
+  geom_smooth(method = "lm") + 
+  geom_smooth(se = FALSE, color = "red")
+ 
+# view plot
+plot
+```
+
+It looks like our model is quite similar to the average of observed values as plotted by the LOESS.
+
+
+
+11. Obtaining r_squared
+
+```{r}
+r_sq <- summary(model)$r.squared * 100
+r_sq
+```
+```{r}
+sprintf("Based on a simple linear regression model, we have determined that %s percent of the variation in respondent income can be predicted by a respondent's education level.", r_sq)
+```
+
+
+## Build comparison model and analyze results.
+
+12. Build a second model, `model_2`, which regresses `education_years`, `age`, and `gender` on `labor_income`.
+
+```{r}
+model2 <- lm(labor_income~education_years + age + gender, data = train)
+
+summary(model2)
+
+```
+
+* **Do education_years, age, and gender all have a significant impact on labor_income ?** All variables are highly significant, with a p-value < 0.01.
+
+* **gender is a boolean categorical variable; how should we interpret its’ coefficient value?** In this case, the gender coefficient represents the effect of changing the gender of the respondent to woman.
+
+* **Which variable has the largest effect on labor_income?** gender has the largest absolute effect on labor_income.
+
+
+
+
+13. Extract `r.squared` from our model output, multiply the result by `100`
+
+
+
+```{r}
+r_sq2 <- summary(model2)$r.squared * 100
+sprintf("Based on a simple linear regression model, we have determined that %s percent of the variation in respondent income can be predicted by a respondent's education level, age and gender.", r_sq2)
+```
+
+14. Let’s also provide a graphic representation of our model_2 fit by plotting the observed and predicted values of labor income using add_predictions() from the modelr` package:
+
+Using our test data, add a call to add_predictions(), passing in model_2
+Add a call to ggplot(), passing age and labor_income as parameters to aes()
+Add a call to geom_point() to plot our observed values
+Add a call to geom_line(), explicitly setting in pred as a y value in aes(), and passing in color = "blue" as a parameter.
+
+```{r}
+train2 <- test%>%add_predictions(model2)
+train2
+
+plot <- ggplot(data=train2, aes(age, labor_income))+
+  geom_point()+
+  geom_line(aes(y=pred), color="blue")
+
+plot
+
+```
+
+
+
+15. Extract the value of the education_years `coefficent` and assign the result to a variable called `education_coefficent`.
+
+```{r}
+education_coefficent <- model2$coefficients[2]
+
+sprintf("Based on a multiple linear regression model of education, age, and gender, for every additional year of formal education, the average American resident's income increases by $%s.", education_coefficent)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

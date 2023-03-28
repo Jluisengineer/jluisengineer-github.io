@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+    
+</head>
+<body class="backcolor">
+    
+    <div class="full-img" id="fullImgBox">
+        <img src="images/imagen1.jpg" id="fullImg" alt="">
+        <span onclick="closeImg()" class = "close">X</span>
+        <span class="next" onclick="next()">></span>
+        <span class="previous" onclick="previous()"><</span>
+    </div>
+    <header>
+        <div class="nav-container">
+            <ul class="navigation">
+              <li><a href="../../index.html">Home</a></li>
+              <li><a href="../../aboutme.html">About me</a></li>
+              <li><a href="../../skills.html">Skills</a></li>
+              <li class="dropdown">
+                <a href="../../projects.html">Projects</a>
+              </li>
+              <li><a href="../../contact.html" id="contact">Contact</a></li>
+            </ul>
+          </div> 
+    </header>
+
+    <main class="top100">
+      <div class="size16  box1000 center">
+        <h1 class="arial">Dashboards generated with POWER BI</h1>
+        <p class="size14">
+          Power BI is a business analytics service by Microsoft that provides interactive visualizations and business intelligence capabilities with an interface simple enough for end-users to create their own reports and dashboards. <br><br> 
+          As a data analyst, I have utilized Power BI to transform raw data into insightful visualizations and interactive dashboards that help decision-makers understand key trends and make informed business decisions. <br><br> 
+          In this section, I showcase my skills in designing and developing engaging and informative dashboards using Power BI.
+        </p>
+      </div>
+    
+    <div class="image-container grid-gallery">
+        <div><img  class="gallery" src="images/imagen1.jpg" alt="Image 1" onclick="openImg(this.src)"></div>
+        <div><img  class="gallery" src="images/imagen2.jpg" alt="Image 2" onclick="openImg(this.src)"></div>
+        <div><img  class="gallery" src="images/imagen3.jpg" alt="Image 3" onclick="openImg(this.src)"></div>
+        <div><img  class="gallery" src="images/imagen4.jpg" alt="Image 4" onclick="openImg(this.src)"></div>
+        <div><img  class="gallery" src="images/imagen5.jpg" alt="Image 5" onclick="openImg(this.src)"></div>     
+    </div>
+  </main>
+    
+    <!-- descargar archivos.
+    <div>
+      <a href="http://127.0.0.1:5500/projects/Dashboard/images/imagen4.jpg" download>download</a>
+    </div>
+    -->
+
+    <script src="script.js"></script>
+</body>
+</html>

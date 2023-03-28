@@ -1,0 +1,270 @@
+/* Containers */
+
+.box400{
+  width: 400px;
+}
+
+.box600{
+  width: 600px;
+}
+.box1000{
+  width: 1000px;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/* Grids */
+
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid3col{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.grid-gallery{
+  display: grid;
+  grid: 1fr 1fr 1fr/ 1fr 1fr 1fr 1fr;
+  gap: 25px;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/* images */
+
+.imag{
+  min-width: 150px;
+  width: 550px;
+  height: 375px;
+}
+.icons{
+  width: 20px;
+  height: 20px;
+  padding-right: 25px;
+
+}
+.nondisplay{
+  list-style: none;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/* Gallery*/
+
+.gallery{
+  width: 250px;
+  height:125px;
+  cursor: pointer;
+  transition: 1s;
+}
+.gallery:hover{
+  transform: scale(1.2);
+}
+
+.full-img{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+.full-img .close{
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  color: rgba(255, 255, 255);
+  font-size: 20pt;
+  cursor: pointer;
+}
+.full-img img{
+  width: 80%;
+  max-width: 1200px;
+  
+}
+/* buttons */
+.full-img .next{
+  cursor: pointer;
+  position: absolute;
+  top:50%;
+  right:4%;
+  color:  rgb(255, 255, 255);
+  border: 1px solid white;
+  padding: 4px;
+  
+}
+
+.full-img .previous{
+  cursor: pointer;
+  position: absolute;
+  top:50%;
+  left:4%;
+  color: rgb(255, 255, 255);
+  border: 1px solid white;
+  padding: 4px;
+  
+}
+.full-img .next:hover, .previous:hover{
+  transform: scale(1.5);
+  transition: 1s;
+}
+
+.full-img .close{
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  color: rgba(255, 255, 255);
+  font-size: 14pt;
+  background-color: black;
+  cursor: pointer;
+  border: 1px solid white;
+  padding: 4px;
+}
+
+
+
+/* ----------------------------------------------------------------------------------------------------- */
+
+.backcolor{
+  background-color: #e7ddd3;
+}
+
+
+.presentation{
+  font-size: 20pt;
+}
+
+.arial{
+  font-family: Arial, Helvetica, sans-serif;
+}
+.shantell-shans{
+  font-family: 'Shantell Sans';
+}
+.size16{
+  font-size: 16pt;
+}
+
+.size14{
+  font-size: 14pt;
+}
+
+.size13{
+  font-size: 13pt;
+}
+.size10{
+  font-size: 10pt;
+}
+.margintop50{
+  margin-top: 50px;
+}
+
+a:hover {
+  color: green;
+}
+
+/* positions */
+
+/* center */
+
+.center{
+  margin: 100px auto;
+}
+
+/* Margins */
+
+.top50{
+  margin-top: 50px;
+}
+
+.top100{
+  margin-top: 100px;
+}
+.left20{
+  margin-left: 20px;
+}
+.left40 {
+  margin-left: 40px;
+}
+
+.left75{
+  margin-left: 75px;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/* Navegacion */
+.nav-container {
+    background-color: #333;
+    padding: 10px;
+    position: fixed;
+    top:0px;
+    min-width: 100%;
+  }
+  
+  .navigation {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .navigation li {
+    position: relative;
+  }
+  
+  .navigation li a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .navigation li:hover > ul.dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #333;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown-menu li {
+    border-bottom: 1px solid #666;
+  }
+  
+  .dropdown-menu li a {
+    display: block;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .dropdown-menu li:last-child {
+    border-bottom: none;
+  }
+  
+  .navigation li.active > a {
+    background-color: #666;
+  }
+  
+  .navigation li.selected > a {
+    background-color: #999;
+  }
+
+  .navigation a:hover{
+    color: rgb(122, 167, 122);
+  }
+
+  #contact{
+    padding-right: 50px;
+  }
+/* ----------------------------------------------------------------------------------------------------- */
