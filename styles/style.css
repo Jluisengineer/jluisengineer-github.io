@@ -193,8 +193,17 @@ a:hover {
 .left75{
   margin-left: 75px;
 }
+
 .padTop40{
   padding-top: 40px;
+}
+
+.padrigth40{
+  padding-right: 400px;
+}
+
+.justify{
+  text-align: justify;
 }
 /* ----------------------------------------------------------------------------------------------------- */
 /* Navegacion */
